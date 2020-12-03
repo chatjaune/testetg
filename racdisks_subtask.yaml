@@ -1,0 +1,10 @@
+- name: Add the disk path to the list of disk
+  set_fact:
+    identify_disks_updated_list: "{{ identify_disks_updated_list | default([]) + [ outer_item | combine (diskpath, recursive=true) ] }}"
+  vars:
+    diskpath: "{ 'diskPath': '/dev/{{ item.key }}' }"
+  when:
+  - item.value.wwn is defined
+  - item.value.wwn is search("{{ outer_item.uuid | regex_replace('-') | lower }}")
+  with_dict: "{{ ansible_devices }}"
+  no_log: true
