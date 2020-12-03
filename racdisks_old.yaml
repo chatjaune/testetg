@@ -1,0 +1,38 @@
+---
+- hosts: all
+  gather_facts: false
+ 
+  tasks:
+  - name: Load the JSON file
+    include_vars:
+      file: disks.json
+      name: identify_disks_list_disks
+ 
+  - name: Get the SCSI slot for each disk
+    debug:
+      msg: "{{ item.controllerKey }}:0:{{ item.unitNumber }}:0,{{ item.capacity }}"
+    loop: "{{ identify_disks_list_disks.disks}}"
+    register: identify_disks_transformed_list
+    no_log: true
+ 
+  - debug: var=identify_disks_transformed_list.results
+ 
+  - name: Identify each disk by its SCSI slot
+    shell:
+      lsscsi | awk '/^\[{{ item.msg.split(',')[0][3:] }}\]/ { print $NF }'
+    loop: "{{ identify_disks_transformed_list.results }}"
+    register: identify_disks_results_lsscsi
+    no_log: true
+ 
+  - debug: var=identify_disks_results_lsscsi.results
+ 
+  - name: Update the list of disks
+    set_fact:
+      identify_disks_updated_list: "{{ identify_disks_updated_list | default([]) + [ item.item.item | combine (diskpath, recursive=true) ] }}"
+    vars:
+      diskpath: "{ 'diskPath': '{{ item.stdout }}' }"
+    loop: "{{ identify_disks_results_lsscsi.results }}"
+    no_log: true
+ 
+  - name: Display the updated list of disks
+    debug: var=identify_disks_updated_list
