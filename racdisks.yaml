@@ -1,0 +1,18 @@
+---
+- hosts: all
+  gather_facts: true
+
+  tasks:
+  - name: Load the JSON file
+    include_vars:
+      file: disks.json
+      name: identify_disks_list
+ 
+  - include_tasks: racdisks_subtask.yml
+    loop: "{{ identify_disks_list.disks }}"
+    loop_control:
+      loop_var: outer_item
+    no_log: true
+ 
+  - name: Display the updated list of disks
+    debug: var=identify_disks_updated_list
