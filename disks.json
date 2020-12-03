@@ -1,0 +1,34 @@
+{"disks":
+    [
+        {
+            "capacity": 10,
+            "controllerKey": 1001,
+            "unitNumber": 0,
+            "uuid": "6000C290-294b-6720-6a93-4fc6f4576db4"
+        },
+        {
+            "capacity": 15,
+            "controllerKey": 1001,
+            "unitNumber": 1,
+            "uuid": "6000C29e-22a3-b242-1861-7c845e92bf46"
+        },
+        {
+            "capacity": 20,
+            "controllerKey": 1002,
+            "unitNumber": 0,
+            "uuid": "6000C29a-8d4f-1660-1462-5ea9f460e2e6"
+         },
+        {
+            "capacity": 30,
+            "controllerKey": 1003,
+            "unitNumber": 0,
+            "uuid": "6000C296-8065-4813-08ec-46b74e996024"
+        },
+        {
+            "capacity": 35,
+            "controllerKey": 1003,
+            "unitNumber": 1,
+            "uuid": "6000C297-f569-74f6-512f-5aa0965ac82c"
+        }
+    ]
+}
